@@ -42,14 +42,14 @@ using namespace std;
 
     @최적화
     3번째 for문에서 발생하지 않을 비용까지 전부 확인하는 것이 관찰됨
-    따라서 발생 가능한 비용(limit))까지만 확인하도록 수정함
+    따라서 발생 가능한 비용(localMaxCost))까지만 확인하도록 수정함
     이 때, 이전 셀보다 비용을 한칸 더 확인해야 되는 것이 문제였음
     지금 인덱스의 정보를 만들기 위해선, 이전 셀에서 동일한 인덱스를 참조해야됨
     그러나 이전 셀보다 한칸 더 확인하기 때문에, 필연적으로 없는 정보를 참조하는 상황이 발생함
 
-    이를 for문 종료 후, [limit]에 있는 정보를 [limit+1]로 복사하여 해결함
-    이것이 가능한 이유는 limit 이후로는 점수들이 전부 동일하게 됨
-    왜냐하면 이미 limit가 발생 가능한 최대 비용인 시점에서, limit+n의 최적값까지 확정된 것
+    이를 for문 종료 후, [localMaxCost]에 있는 정보를 [localMaxCost+1]로 복사하여 해결함
+    이것이 가능한 이유는 localMaxCost 이후로는 점수들이 전부 동일하게 됨
+    왜냐하면 이미 limit가 발생 가능한 최대 비용인 시점에서, localMaxCost+n의 최적값까지 확정된 것
     따라서 limit보다 더 큰 비용을 지불하더라도 최적값에 영향을 주지 않음
 
     예상대로 1020ms -> 582ms로, 약 절반가량 실행시간이 감소함
@@ -74,13 +74,13 @@ public:
             {
                 int cost = min(grid[i][j-1], 1);
                 int score = grid[i][j-1];
-                int limit = i+j;
+                int localMaxCost = i+j;
 
                 oldCell = record[j];
 
                 for (int u = 0; u < cost; ++u)
                     record[j][u] = -1;
-                for (int u = cost; u < min(limit,MAX_COST); ++u)
+                for (int u = cost; u < min(localMaxCost,MAX_COST); ++u)
                 {
                     int maxScore = max(record[j-1][u-cost], oldCell[u-cost]);
                     if (maxScore < 0)
@@ -88,7 +88,7 @@ public:
                     else
                         record[j][u] = maxScore + score;
                 }
-                record[j][limit] = record[j][limit-1];
+                record[j][localMaxCost] = record[j][localMaxCost-1];
             }
         }
 
