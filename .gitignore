@@ -1,6 +1,7 @@
 /.vscode
 /build
 /executable
+/src/bush
 
 # Prerequisites
 *.d
