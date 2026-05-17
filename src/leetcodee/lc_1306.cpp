@@ -12,7 +12,7 @@ using namespace std;
      ㄴ 방문하는 노드에 거리, 비용 같은 상태가 없기 때문
     때문에 최대 발생 가능한 방문 큐 크기 또한 입력 길이를 넘어서지 않음
     예상 시간 복잡도 O(n)
-    실행 결과, 0ms(over 100%), 35MB(over 85.06%)가 나옴
+    실행 결과, 0ms(over 100%), 35MB(over 85.60%)가 나옴
     어떤 트릭이나 기법도 필요없는 단순한 BFS/DFS 문제였음
 */
 
@@ -35,19 +35,19 @@ public:
             if (arr[curVisit] == 0)
                 return true;
 
-            int left = curVisit - arr[curVisit];
-            int right = curVisit + arr[curVisit];
+            int nextL = curVisit - arr[curVisit];
+            int nextR = curVisit + arr[curVisit];
 
-            if (left >= 0 && !isVisited[left])
+            if (nextL >= 0 && !isVisited[nextL])
             {
-                toVisit.push(left);
-                isVisited[left] = true;
+                toVisit.push(nextL);
+                isVisited[nextL] = true;
             }
 
-            if (right < n && !isVisited[right])
+            if (nextR < n && !isVisited[nextR])
             {
-                toVisit.push(right);
-                isVisited[right] = true;
+                toVisit.push(nextR);
+                isVisited[nextR] = true;
             }
         }
 
